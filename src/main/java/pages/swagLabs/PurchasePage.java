@@ -1,6 +1,6 @@
 package pages.swagLabs;
 
-import com.codeborne.selenide.ElementsCollection;
+
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import pages.base.BasePage;
@@ -11,7 +11,7 @@ import java.util.Properties;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$x;
+
 
 
 public class PurchasePage extends BasePage {

@@ -1,21 +1,16 @@
 package pages.base;
 
-import com.codeborne.selenide.Condition;
-
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static java.util.stream.StreamSupport.stream;
+
 
 public class BasePage {
 
@@ -29,12 +24,12 @@ public class BasePage {
     public SelenideElement tableCartListOverview = $(By.className("cart_list"));
 
 
-
+    public SelenideElement itemTotal = $(By.className("summary_subtotal_label"));
     public SelenideElement welcomeMessage = $(By.className("title"));
     public SelenideElement welcomeMessageInCart = $(By.className("title"));
     public SelenideElement welcomeMessageYourInformation = $(By.className("title"));
     public SelenideElement welcomeMessageOverview = $(By.className("title"));
-    public SelenideElement welcomeMessageComplete = $(("title"));
+    public SelenideElement welcomeMessageComplete = $(By.className("title"));
 
 
 
@@ -58,34 +53,32 @@ public class BasePage {
     public void tableCartListOverview() {
         tableCartListOverview.shouldBe(visible);
         ElementsCollection sumPrice = tableCartListOverview.$$(".inventory_item_price");
+        ArrayList<Float> prises = new ArrayList<>();
 
-
-//        Stream.of(item.getOwnText().replaceAll("\\$", ""))
-//                .map(s -> s.substring(1))
-//                .mapToInt(Integer::parseInt)
-//                .sum()
-//                .ifPresent(System.out::println);
-        ArrayList<String> prises = new ArrayList<>();
-        //List<String> price = new ArrayList<>();
-        for (SelenideElement item : sumPrice) {
-            prises.add(item.getOwnText().replaceAll("\\$", ""));
+       for (SelenideElement item : sumPrice) {
+             prises.add(Stream.of(item.getOwnText().replaceAll("\\$", ""))
+                    .map(s -> s.substring(1))
+                    .map(s -> s.replace(",","."))
+                    .map(Float::parseFloat)
+                    .reduce(0f, Float::sum));
 
         }
-//        Stream<String> streamFromArrays = Arrays.stream(prises());
-        System.out.println(prises);
-//                 Stream.of(streamFromArrays)
-//               .map(s -> s.substring(1))
-//                .mapToInt(Integer::parseInt)
-//                .sum()
-//                .ifPresent(System.out::println);
+        double sum = prises.stream()
+                .mapToDouble(a -> a)
+                .sum();
+        System.out.println(sum);
+        String total = itemTotal.getOwnText().replaceAll("\\$",  "")
+                .replaceAll("Item total:", "");
+        double iTemTotal = Double.parseDouble(total);
+        System.out.println(AssertTrue(iTemTotal == sum));
+
+
     }
 
+    private boolean AssertTrue(boolean b) {
+        return b;
+    }
 
-
-
-//    public void buttonsAddToCart() {
-//        buttonsAddToCart.shouldBe(visible);
-//    }
 
     public void buttonCartLink() {
         buttonCartLink.shouldBe(visible).click();

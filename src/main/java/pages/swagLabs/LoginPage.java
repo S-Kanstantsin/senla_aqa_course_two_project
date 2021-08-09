@@ -15,8 +15,7 @@ import static com.codeborne.selenide.Selenide.open;
 
 
 public class LoginPage extends BasePage {
-    //    SelenideElement loginField = $("#session_email");
-//    SelenideElement passwordField = $("#session_password");
+
     SelenideElement loginField = $(By.id("user-name"));
     SelenideElement passwordField = $(By.id("password"));
     SelenideElement signInButton = $(By.id("login-button"));
