@@ -1,7 +1,6 @@
 package tests.swagLabs.positive;
 
-
-
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.junit5.TextReportExtension;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,8 +9,6 @@ import pages.swagLabs.PurchasePage;
 import tests.base.BasesTest;
 
 import java.io.IOException;
-
-
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith({TextReportExtension.class})
@@ -60,13 +57,35 @@ public class FirstTest extends BasesTest {
 
     @Test
     @Order(4)
-    public void wwpurchaseTest() throws IOException {
+    public void deletAllProductsTest() throws IOException {
         LoginPage loginPage = new LoginPage();
         loginPage.openLoginPage();
         loginPage.login();
-        loginPage.buttonAddToCart();
+        loginPage.tableInventoryContainer();
         loginPage.buttonCartLink();
         loginPage.welcomeMessageInCart();
-//        loginPage.cartButtonRemoves();
+        loginPage.tableCartList();
+        loginPage.buttonNotRemove();
+    }
+
+
+    @Test
+    @Order(5)
+    public void terrrchaseTest() throws IOException {
+        LoginPage loginPage = new LoginPage();
+        PurchasePage user = new PurchasePage();
+        loginPage.openLoginPage();
+        loginPage.login();
+        loginPage.tableInventoryContainer();
+        loginPage.buttonCartLink();
+        loginPage.welcomeMessageInCart();
+        loginPage.buttonCheckout();
+        loginPage.welcomeMessageYourInformation();
+        user.userInformationgin();
+        user.welcomeMessageOverview();
+        user.tableCartListOverview();
+
+        Selenide.sleep(2000);
+
     }
 }
